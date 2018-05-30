@@ -10,12 +10,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @ToString(exclude = "password")
 @Entity // This tells Hibernate to make a table out of this class
 @NoArgsConstructor
-public class User {
+public class User implements Serializable {
 
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
@@ -24,6 +26,12 @@ public class User {
     private String name;
 
     private String email;
+
+    private String remember_token;
+
+    private Date created_at;
+
+    private Date updated_at;
 
     @JsonIgnore
     private String password;

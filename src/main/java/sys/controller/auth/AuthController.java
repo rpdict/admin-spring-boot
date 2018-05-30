@@ -1,5 +1,7 @@
 package sys.controller.auth;
 
+import org.springframework.web.bind.annotation.*;
+import sys.common.Constant;
 import sys.common.JwtHelper;
 import sys.common.ResultEnum;
 import sys.controller.Base;
@@ -7,10 +9,10 @@ import sys.entity.User;
 import sys.entity.auth.Audience;
 import sys.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static sys.common.ResultEnum.success;
 
@@ -31,27 +33,34 @@ public class AuthController {
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Object login(@RequestParam(value = "userName", required = true) String userName, @RequestParam(value = "password", required = true) String password) {
-//        User user = new User(userName, password);
-//        user.setName(userName);
-//        user.setEmail(password);
-//        System.out.println(userName);
-//        System.out.println(password);
-//        System.out.println(user.getPassword());
-        User user = userRepository.findByName(userName);
-        if (!User.PASSWORD_ENCODER.matches(password, user.getPassword())) {
+    public Object login(
+            @RequestParam(value = "userName", required = true) String userName,
+            @RequestParam(value = "password", required = true) String password,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        System.out.println(userName);
+        System.out.println(password);
+
+        User _user = userRepository.findByName(userName);
+        if (!User.PASSWORD_ENCODER.matches(password, _user.getPassword())) {
             return ResultEnum._403();
         }
         String jwtToken = JwtHelper.createJWT(
-                user.getName(),
-                user.getId().toString(),
-                user.getRoles().toString(),
+                _user.getName(),
+                _user.getId().toString(),
+                _user.getRoles().toString(),
                 audience.getClientId(),
                 audience.getName(),
-                audience.getExpiresSecond()*1000,
+                audience.getExpiresSecond() * 1000,
                 audience.getBase64Secret());
 
         String result_str = "bearer;" + jwtToken;
+
+        request.getSession().setAttribute(Constant.SESSION_USER, _user);        // 用户信息传入session
+        request.getSession().setAttribute(Constant.CLAIMS, jwtToken);
+        System.out.println(request.getSession().getAttribute(Constant.CLAIMS));
+
         return ResultEnum.success(result_str);
     }
 }

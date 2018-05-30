@@ -2,6 +2,8 @@ package sys.common;
 
 import lombok.Data;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author zhaoruipeng
  * @ClassName Result
@@ -15,10 +17,16 @@ public class ResultEnum <T> {
      * 错误码
      */
     private Integer code;
+
     /**
      * 提示信息
      */
     private String msg;
+
+    /**
+     * 结果
+     */
+    private String result;
 
     /**
      * 返回的具体内容
@@ -27,8 +35,9 @@ public class ResultEnum <T> {
 
     public static ResultEnum success(Object object) {
         ResultEnum resultEnum = new ResultEnum();
-        resultEnum.setCode(200);
-        resultEnum.setMsg("success");
+        resultEnum.setCode(HttpServletResponse.SC_OK);
+        resultEnum.setMsg("OK");
+        resultEnum.setResult("success");
         resultEnum.setData(object);
         return resultEnum;
     }
@@ -46,8 +55,17 @@ public class ResultEnum <T> {
 
     public static ResultEnum _403() {
         ResultEnum resultEnum = new ResultEnum();
-        resultEnum.setCode(403);
-        resultEnum.setMsg("forbidden");
+        resultEnum.setCode(HttpServletResponse.SC_FORBIDDEN);
+        resultEnum.setMsg("Forbidden");
+        resultEnum.setResult("error");
+        return resultEnum;
+    }
+
+    public static ResultEnum _401() {
+        ResultEnum resultEnum = new ResultEnum();
+        resultEnum.setCode(HttpServletResponse.SC_UNAUTHORIZED);
+        resultEnum.setMsg("Unauthorized");
+        resultEnum.setResult("error");
         return resultEnum;
     }
 

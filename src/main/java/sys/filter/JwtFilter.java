@@ -6,6 +6,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.GenericFilterBean;
+import sys.common.Constant;
 import sys.common.JwtHelper;
 import sys.common.ResultEnum;
 import sys.controller.Base;
@@ -65,7 +66,9 @@ public class JwtFilter extends GenericFilterBean {
         } else {
             try {
                 if (authHeader == null || !authHeader.startsWith("bearer;")) {
-                    res.getWriter().write(gson.toJson(ResultEnum._403()));
+                    ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    res.getWriter().write(gson.toJson(ResultEnum._401()));
+                    System.out.println("no authHeader 401");
                     return;
 //                    throw new LoginException(ResultEnum.LOGIN_ERROR);
                 }
@@ -75,16 +78,25 @@ public class JwtFilter extends GenericFilterBean {
                     BeanFactory factory = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
                     audience = (Audience) factory.getBean("audience");
                 }
+                if (request.getSession().getAttribute(Constant.CLAIMS) == null) {
+                    ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    res.getWriter().write(gson.toJson(ResultEnum._401()));
+                    System.out.println("no session 401");
+                    return;
+                }
                 final Claims claims = JwtHelper.parseJWT(token, audience.getBase64Secret());
                 if (claims == null) {
-                    res.getWriter().write(gson.toJson(ResultEnum._403()));
+                    ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    res.getWriter().write(gson.toJson(ResultEnum._401()));
+                    System.out.println("token wrong 401");
                     return;
+
 //                    throw new LoginException(ResultEnum.LOGIN_ERROR);
                 }
-                request.setAttribute("token", claims);
+                request.setAttribute(Constant.CLAIMS, claims);
             } catch (final Exception e) {
                 e.printStackTrace();
-                res.getWriter().write(gson.toJson(ResultEnum._403()));
+                res.getWriter().write(gson.toJson(ResultEnum._401()));
                 return;
             }
 
