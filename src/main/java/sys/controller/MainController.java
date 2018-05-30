@@ -1,10 +1,11 @@
-package hello.controller;
+package sys.controller;
 
-import hello.entity.User;
-import hello.repository.UserRepository;
+import sys.entity.User;
+import sys.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController    // This means that this class is a Controller
@@ -19,9 +20,11 @@ public class MainController {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
 
+        String[] roles = new String[]{"1111","2222"};
         User n = new User();
         n.setName(name);
         n.setEmail(email);
+        n.setRoles(roles);
         userRepository.save(n);
 
         HashMap<String, String> response = new HashMap<>();

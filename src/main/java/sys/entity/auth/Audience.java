@@ -1,8 +1,8 @@
-package hello.entity.auth;
+package sys.entity.auth;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
  * @date 2018/5/28 10:32
  */
 @Data
-@ConfigurationProperties(prefix = "audience")
 @Component
+@ConfigurationProperties(prefix = "audience")
 public class Audience {
 
     private String clientId;

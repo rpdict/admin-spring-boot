@@ -1,7 +1,7 @@
-package hello.config;
+package sys.config;
 
-import hello.entity.Blog;
-import hello.entity.User;
+import sys.entity.Blog;
+import sys.entity.User;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;

@@ -1,35 +1,9 @@
-package hello.controller;
+package sys.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import hello.entity.Result;
 import lombok.NoArgsConstructor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 
 @NoArgsConstructor
 public class Base {
-
-    public static Result success(Object object) {
-        Result result = new Result();
-        result.setCode(200);
-        result.setMsg("success");
-        result.setData(object);
-        return result;
-    }
-
-    public static Result success() {
-        return success(null);
-    }
-
-    public static Result error(Integer code, String msg) {
-        Result result = new Result();
-        result.setCode(code);
-        result.setMsg(msg);
-        return result;
-    }
 
     /**
      * @Fields jsonString : TODO(通用json字符串)

@@ -1,16 +1,16 @@
-package hello.controller;
+package sys.controller;
 
-import hello.entity.auth.Audience;
+import sys.entity.auth.Audience;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 public class HelloController {
     
-    @RequestMapping("/")
+    @RequestMapping("/article/insert")
     public String index() {
         Audience test = new Audience();
-        return "1"+test.getBase64Secret();
+        return "1";
     }
 
     @RequestMapping(value = "hello")

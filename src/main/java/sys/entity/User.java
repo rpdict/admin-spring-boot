@@ -1,7 +1,6 @@
-package hello.entity;
+package sys.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jdk.nashorn.internal.objects.annotations.Constructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
