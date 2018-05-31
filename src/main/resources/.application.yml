@@ -3,9 +3,10 @@ spring:
     rest:
       base-path: /api
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/db_example?useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/db_example?useSSL=false&serverTimezone=UTC
     username: springuser
     password: secret
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update

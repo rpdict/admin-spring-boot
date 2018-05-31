@@ -38,7 +38,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-configuration-processor")
     compile("org.springframework:spring-test")
     compile("org.hamcrest:hamcrest-library")
-    compile("mysql:mysql-connector-java")
+    compile("mysql:mysql-connector-java:8.0.11")
     compile("com.fasterxml.jackson.core:jackson-databind")
     compile("com.vaadin.external.google:android-json:0.0.20131108.vaadin1")
     compile("org.projectlombok:lombok:1.16.20")

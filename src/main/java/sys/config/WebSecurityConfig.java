@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //添加需要拦截的url
         List<String> urlPatterns = Lists.newArrayList();
         urlPatterns.add("/article/insert");
-        urlPatterns.add("/demo/add");
+//        urlPatterns.add("/demo/add");
         urlPatterns.add("/api/*");
         registrationBean.addUrlPatterns(urlPatterns.toArray(new String[urlPatterns.size()]));
         return registrationBean;

@@ -32,8 +32,7 @@ public class AuthController {
     @Autowired
     private Audience audience;
 
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping(path = "/login")
     public Object login(
             @RequestParam(value = "userName", required = true) String userName,
             @RequestParam(value = "password", required = true) String password,
