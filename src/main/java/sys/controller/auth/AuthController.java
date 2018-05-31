@@ -22,6 +22,7 @@ import static sys.common.ResultEnum.success;
  * @Package hello.controller
  * @date 2018/4/3 15:57
  */
+
 @RestController    // This means that this class is a Controller
 public class AuthController {
 
@@ -43,24 +44,26 @@ public class AuthController {
         System.out.println(password);
 
         User _user = userRepository.findByName(userName);
-        if (!User.PASSWORD_ENCODER.matches(password, _user.getPassword())) {
-            return ResultEnum._403();
+        if (_user != null) {
+            if (!User.PASSWORD_ENCODER.matches(password, _user.getPassword())) {
+                return ResultEnum._403(response);
+            }
+            String jwtToken = JwtHelper.createJWT(
+                    _user.getName(),
+                    _user.getId().toString(),
+                    _user.getRoles().toString(),
+                    audience.getClientId(),
+                    audience.getName(),
+                    audience.getExpiresSecond() * 1000,
+                    audience.getBase64Secret());
+
+            String result_str = "bearer;" + jwtToken;
+
+            request.getSession().setAttribute(Constant.SESSION_USER, _user);        // 用户信息传入session
+            request.getSession().setAttribute(Constant.CLAIMS, jwtToken);
+            System.out.println(request.getSession().getAttribute(Constant.CLAIMS));
+            return ResultEnum.success(result_str);
         }
-        String jwtToken = JwtHelper.createJWT(
-                _user.getName(),
-                _user.getId().toString(),
-                _user.getRoles().toString(),
-                audience.getClientId(),
-                audience.getName(),
-                audience.getExpiresSecond() * 1000,
-                audience.getBase64Secret());
-
-        String result_str = "bearer;" + jwtToken;
-
-        request.getSession().setAttribute(Constant.SESSION_USER, _user);        // 用户信息传入session
-        request.getSession().setAttribute(Constant.CLAIMS, jwtToken);
-        System.out.println(request.getSession().getAttribute(Constant.CLAIMS));
-
-        return ResultEnum.success(result_str);
+        return ResultEnum._403(response);
     }
 }

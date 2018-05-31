@@ -67,7 +67,7 @@ public class JwtFilter extends GenericFilterBean {
             try {
                 if (authHeader == null || !authHeader.startsWith("bearer;")) {
                     ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    res.getWriter().write(gson.toJson(ResultEnum._401()));
+                    res.getWriter().write(gson.toJson(ResultEnum._401((HttpServletResponse) res)));
                     System.out.println("no authHeader 401");
                     return;
 //                    throw new LoginException(ResultEnum.LOGIN_ERROR);
@@ -80,14 +80,14 @@ public class JwtFilter extends GenericFilterBean {
                 }
                 if (request.getSession().getAttribute(Constant.CLAIMS) == null) {
                     ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    res.getWriter().write(gson.toJson(ResultEnum._401()));
+                    res.getWriter().write(gson.toJson(ResultEnum._401((HttpServletResponse) res)));
                     System.out.println("no session 401");
                     return;
                 }
                 final Claims claims = JwtHelper.parseJWT(token, audience.getBase64Secret());
                 if (claims == null) {
                     ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    res.getWriter().write(gson.toJson(ResultEnum._401()));
+                    res.getWriter().write(gson.toJson(ResultEnum._401((HttpServletResponse) res)));
                     System.out.println("token wrong 401");
                     return;
 
@@ -96,7 +96,7 @@ public class JwtFilter extends GenericFilterBean {
                 request.setAttribute(Constant.CLAIMS, claims);
             } catch (final Exception e) {
                 e.printStackTrace();
-                res.getWriter().write(gson.toJson(ResultEnum._401()));
+                res.getWriter().write(gson.toJson(ResultEnum._401((HttpServletResponse) res)));
                 return;
             }
 

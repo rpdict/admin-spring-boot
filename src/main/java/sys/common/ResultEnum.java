@@ -2,6 +2,7 @@ package sys.common;
 
 import lombok.Data;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2018/5/28 9:56
  */
 @Data
-public class ResultEnum <T> {
+public class ResultEnum<T> {
     /**
      * 错误码
      */
@@ -53,7 +54,8 @@ public class ResultEnum <T> {
         return resultEnum;
     }
 
-    public static ResultEnum _403() {
+    public static ResultEnum _403(HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         ResultEnum resultEnum = new ResultEnum();
         resultEnum.setCode(HttpServletResponse.SC_FORBIDDEN);
         resultEnum.setMsg("Forbidden");
@@ -61,7 +63,8 @@ public class ResultEnum <T> {
         return resultEnum;
     }
 
-    public static ResultEnum _401() {
+    public static ResultEnum _401(HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         ResultEnum resultEnum = new ResultEnum();
         resultEnum.setCode(HttpServletResponse.SC_UNAUTHORIZED);
         resultEnum.setMsg("Unauthorized");
