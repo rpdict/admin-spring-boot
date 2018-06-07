@@ -70,28 +70,22 @@ public class JwtFilter extends GenericFilterBean {
                     res.getWriter().write(gson.toJson(ResultEnum._401((HttpServletResponse) res)));
                     System.out.println("no authHeader 401");
                     return;
-//                    throw new LoginException(ResultEnum.LOGIN_ERROR);
                 }
+
                 final String token = authHeader.substring(7);
 
                 if (audience == null) {
                     BeanFactory factory = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
                     audience = (Audience) factory.getBean("audience");
                 }
-                if (request.getSession().getAttribute(Constant.CLAIMS) == null) {
-                    ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    res.getWriter().write(gson.toJson(ResultEnum._401((HttpServletResponse) res)));
-                    System.out.println("no session 401");
-                    return;
-                }
+
                 final Claims claims = JwtHelper.parseJWT(token, audience.getBase64Secret());
+
                 if (claims == null) {
                     ((HttpServletResponse) res).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     res.getWriter().write(gson.toJson(ResultEnum._401((HttpServletResponse) res)));
                     System.out.println("token wrong 401");
                     return;
-
-//                    throw new LoginException(ResultEnum.LOGIN_ERROR);
                 }
                 request.setAttribute(Constant.CLAIMS, claims);
             } catch (final Exception e) {

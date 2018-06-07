@@ -33,18 +33,17 @@ public class User implements Serializable {
 
     private Date updated_at;
 
-    @JsonIgnore
     private String password;
 
     private String[] roles;
 
-    private void setPassword(String password) {
+    private void setPasswordEncoder(String password) {
         this.password = PASSWORD_ENCODER.encode(password);
     }
 
     public User(String name, String password, String... roles) {
         this.name = name;
-        this.setPassword(password);
+        this.setPasswordEncoder(password);
         this.roles = roles;
     }
 }

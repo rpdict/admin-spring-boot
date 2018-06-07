@@ -33,18 +33,10 @@ public class AuthController {
     private Audience audience;
 
     @PostMapping(path = "/login")
-    public Object login(
-            @RequestParam(value = "userName", required = true) String userName,
-            @RequestParam(value = "password", required = true) String password,
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) {
-        System.out.println(userName);
-        System.out.println(password);
-
-        User _user = userRepository.findByName(userName);
+    public Object login(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) {
+        User _user = userRepository.findByName(user.getName());
         if (_user != null) {
-            if (!User.PASSWORD_ENCODER.matches(password, _user.getPassword())) {
+            if (!User.PASSWORD_ENCODER.matches(user.getPassword(), _user.getPassword())) {
                 return ResultEnum._403(response);
             }
             String jwtToken = JwtHelper.createJWT(
@@ -58,9 +50,9 @@ public class AuthController {
 
             String result_str = "bearer;" + jwtToken;
 
-            request.getSession().setAttribute(Constant.SESSION_USER, _user);        // 用户信息传入session
-            request.getSession().setAttribute(Constant.CLAIMS, jwtToken);
-            System.out.println(request.getSession().getAttribute(Constant.CLAIMS));
+            System.out.println("=================token info=================");
+            System.out.println(request.getAttribute(Constant.CLAIMS));
+            request.getAttribute(Constant.CLAIMS);
             return ResultEnum.success(result_str);
         }
         return ResultEnum._403(response);
