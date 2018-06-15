@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 @Data
 public class ResultEnum<T> {
     /**
-     * 错误码
+     * 状态码
      */
-    private Integer code;
+    private Integer status;
 
     /**
      * 提示信息
@@ -36,7 +36,7 @@ public class ResultEnum<T> {
 
     public static ResultEnum success(Object object) {
         ResultEnum resultEnum = new ResultEnum();
-        resultEnum.setCode(HttpServletResponse.SC_OK);
+        resultEnum.setStatus(HttpServletResponse.SC_OK);
         resultEnum.setMsg("OK");
         resultEnum.setResult("success");
         resultEnum.setData(object);
@@ -49,7 +49,7 @@ public class ResultEnum<T> {
 
     public static ResultEnum error(Integer code, String msg) {
         ResultEnum resultEnum = new ResultEnum();
-        resultEnum.setCode(code);
+        resultEnum.setStatus(code);
         resultEnum.setMsg(msg);
         return resultEnum;
     }
@@ -57,7 +57,7 @@ public class ResultEnum<T> {
     public static ResultEnum _403(HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         ResultEnum resultEnum = new ResultEnum();
-        resultEnum.setCode(HttpServletResponse.SC_FORBIDDEN);
+        resultEnum.setStatus(HttpServletResponse.SC_FORBIDDEN);
         resultEnum.setMsg("Forbidden");
         resultEnum.setResult("error");
         return resultEnum;
@@ -66,7 +66,7 @@ public class ResultEnum<T> {
     public static ResultEnum _401(HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         ResultEnum resultEnum = new ResultEnum();
-        resultEnum.setCode(HttpServletResponse.SC_UNAUTHORIZED);
+        resultEnum.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         resultEnum.setMsg("Unauthorized");
         resultEnum.setResult("error");
         return resultEnum;

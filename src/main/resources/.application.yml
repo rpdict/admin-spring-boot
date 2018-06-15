@@ -17,6 +17,7 @@ spring:
     port: 6379
     database: 0
     host: localhost
+    password: secret
   http:
     encoding:
       charset: utf-8

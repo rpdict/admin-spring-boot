@@ -1,5 +1,6 @@
 package sys.repository;
 
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import sys.entity.Blog;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 @CrossOrigin
+@RestResource
 public interface BlogRepository extends JpaRepository<Blog, Long> {
 }
